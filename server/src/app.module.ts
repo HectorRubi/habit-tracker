@@ -13,6 +13,13 @@ import { AppController } from './app.controller';
 import configurations from './config/configurations';
 import { EnvironmentVariables } from './config/environment-variables';
 
+import { HabitEntity } from './habits/entities/habit.entity';
+import { HabitLogEntity } from './habits/entities/habit-log.entity';
+import { CategoryEntity } from './categories/entities/category.entity';
+import { UserEntity } from './users/entities/user.entity';
+import { ProfileEntity } from './users/entities/profile.entity';
+import { AuthEntity } from './auth/entities/auth.entity';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [configurations] }),
@@ -25,7 +32,14 @@ import { EnvironmentVariables } from './config/environment-variables';
         username: configService.get('database.user', { infer: true }),
         password: configService.get('database.password', { infer: true }),
         database: configService.get('database.name', { infer: true }),
-        entities: [],
+        entities: [
+          HabitEntity,
+          HabitLogEntity,
+          CategoryEntity,
+          UserEntity,
+          ProfileEntity,
+          AuthEntity,
+        ],
       }),
       inject: [ConfigService],
     }),
