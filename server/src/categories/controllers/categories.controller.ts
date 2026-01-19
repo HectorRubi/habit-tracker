@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -23,20 +24,20 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return `This action returns category with id: ${id}`;
   }
 
   @Put(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
     return `This action updates category with id: ${id} with data: ${JSON.stringify(updateCategoryDto)}`;
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return `This action removes category with id: ${id}`;
   }
 }
