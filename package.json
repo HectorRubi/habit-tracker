@@ -1,0 +1,25 @@
+{
+  "name": "habit-tracker",
+  "version": "1.0.0",
+  "description": "App to track personal habits and get useful insights.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HectorRubi/habit-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/HectorRubi/habit-tracker/issues"
+  },
+  "homepage": "https://github.com/HectorRubi/habit-tracker#readme",
+  "workspaces": [
+    "server",
+    "client"
+  ]
+}
