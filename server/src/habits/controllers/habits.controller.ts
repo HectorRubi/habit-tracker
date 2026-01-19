@@ -12,6 +12,7 @@ import {
 
 import { CreateHabitDto } from '../dto/create-habit';
 import { UpdateHabitDto } from '../dto/update-habit';
+import { CheckHabitDto } from '../dto/check-habit';
 
 @Controller('habits')
 export class HabitsController {
@@ -50,5 +51,13 @@ export class HabitsController {
     @Query('to') to: string,
   ) {
     return `This action returns history for habit with id: ${id}, from: ${from}, to: ${to}`;
+  }
+
+  @Post(':id/check')
+  check(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() checkDto: CheckHabitDto,
+  ) {
+    return `This actions create a habit history log with id: ${id} and data: ${JSON.stringify(checkDto)}`;
   }
 }
