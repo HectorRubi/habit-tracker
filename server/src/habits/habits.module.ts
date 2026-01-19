@@ -1,4 +1,7 @@
 import { Module } from '@nestjs/common';
+import { HabitsController } from './controllers/habits.controller';
 
-@Module({})
+@Module({
+  controllers: [HabitsController],
+})
 export class HabitsModule {}
