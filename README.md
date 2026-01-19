@@ -1,2 +1,3 @@
-# habit-tracker
-App to track personal habits and get usefull insights.
+# Habit Tracker
+
+App to track personal habits and get useful insights.
