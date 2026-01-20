@@ -1,15 +1,13 @@
 import { Body, Controller, Post } from '@nestjs/common';
 
-import { SignUpDto } from '../dto/signup.dto';
+import { AuthService } from '../services/auth.service';
+
 import { SignInDto } from '../dto/signin.dto';
 import { SignOutDto } from '../dto/signout.dto';
 
 @Controller('auth')
 export class AuthController {
-  @Post('signup')
-  signUp(@Body() signUpDto: SignUpDto) {
-    return `This actions create a new user with: ${JSON.stringify(signUpDto)}`;
-  }
+  constructor(private readonly authService: AuthService) {}
 
   @Post('signin')
   signIn(@Body() signInDto: SignInDto) {
