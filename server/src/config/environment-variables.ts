@@ -6,4 +6,5 @@ export interface EnvironmentVariables {
     password: string;
     name: string;
   };
+  saltRounds: number;
 }
