@@ -23,14 +23,6 @@ export class CategoriesController {
 
   @Get()
   async findAll(@Query() query: ListAllDto, @User() user: UserEntity) {
-    if (!query.limit) {
-      query.limit = 10;
-    }
-
-    if (!query.page) {
-      query.page = 0;
-    }
-
     return await this.categoriesService.findAll(query, user.id);
   }
 

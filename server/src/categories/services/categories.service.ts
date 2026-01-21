@@ -15,6 +15,9 @@ export class CategoriesService {
   ) {}
 
   async findAll(query: ListAllDto, userId: number) {
+    const limit = query.limit || 10;
+    const page = query.page || 1;
+
     try {
       const categories = await this.categoriesRepository.find({
         select: {
@@ -23,12 +26,12 @@ export class CategoriesService {
           description: true,
         },
         where: { user: { id: userId } },
-        take: query.limit,
-        skip: query.limit * (query.page - 1),
+        take: limit,
+        skip: limit * (page - 1),
       });
 
       return {
-        page: query.page,
+        page: parseInt(`${page}`, 10),
         result: categories,
       };
     } catch (error) {
