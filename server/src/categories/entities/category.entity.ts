@@ -1,7 +1,14 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { BaseEntity } from '../../entities/base.entity';
 import { UserEntity } from '../../users/entities/user.entity';
+import { HabitEntity } from '../../habits/entities/habit.entity';
 
 @Entity('category')
 export class CategoryEntity extends BaseEntity {
@@ -13,6 +20,9 @@ export class CategoryEntity extends BaseEntity {
 
   @Column({ length: 510 })
   description: string;
+
+  @OneToMany(() => HabitEntity, (habit) => habit.category)
+  habits: HabitEntity[];
 
   @ManyToOne(() => UserEntity, (user) => user.categories)
   user: UserEntity;

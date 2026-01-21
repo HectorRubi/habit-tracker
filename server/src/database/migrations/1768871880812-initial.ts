@@ -20,7 +20,7 @@ export class Initial1768871880812 implements MigrationInterface {
       `CREATE TABLE "habit_log" ("createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updateAt" TIMESTAMP NOT NULL DEFAULT now(), "id" SERIAL NOT NULL, "habitId" integer, CONSTRAINT "PK_fb2ce34f6567722ae951d31547d" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "habit" ("createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updateAt" TIMESTAMP NOT NULL DEFAULT now(), "id" SERIAL NOT NULL, "name" character varying(255) NOT NULL, "description" character varying(510) NOT NULL, "userId" integer, CONSTRAINT "PK_71654d5d0512043db43bac9abfc" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "habit" ("createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updateAt" TIMESTAMP NOT NULL DEFAULT now(), "id" SERIAL NOT NULL, "name" character varying(255) NOT NULL, "description" character varying(510) NOT NULL, "categoryId" integer, "userId" integer, CONSTRAINT "PK_71654d5d0512043db43bac9abfc" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `ALTER TABLE "auth" ADD CONSTRAINT "FK_373ead146f110f04dad60848154" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -35,6 +35,9 @@ export class Initial1768871880812 implements MigrationInterface {
       `ALTER TABLE "habit_log" ADD CONSTRAINT "FK_31802c29994d04f655b9a2df51d" FOREIGN KEY ("habitId") REFERENCES "habit"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
+      `ALTER TABLE "habit" ADD CONSTRAINT "FK_cc3832692d337c59b1a8fb758b2" FOREIGN KEY ("categoryId") REFERENCES "category"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
       `ALTER TABLE "habit" ADD CONSTRAINT "FK_999000e9ce7a69128f471f0a3f9" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
   }
@@ -42,6 +45,9 @@ export class Initial1768871880812 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `ALTER TABLE "habit" DROP CONSTRAINT "FK_999000e9ce7a69128f471f0a3f9"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "habit" DROP CONSTRAINT "FK_cc3832692d337c59b1a8fb758b2"`,
     );
     await queryRunner.query(
       `ALTER TABLE "habit_log" DROP CONSTRAINT "FK_31802c29994d04f655b9a2df51d"`,
