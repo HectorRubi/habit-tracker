@@ -41,6 +41,27 @@ export class CategoriesService {
     }
   }
 
+  async findOne(id: number) {
+    try {
+      const category = this.categoriesRepository.findOne({
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          createdAt: true,
+          updateAt: true,
+        },
+        where: { id },
+        relations: { habits: true },
+      });
+      return category;
+    } catch (error) {
+      // TODO: Save errors in a monitoring storage
+      console.error(error);
+      throw new BadRequestException();
+    }
+  }
+
   async create(createCategoryDto: CreateCategoryDto, userId: number) {
     try {
       const category = await this.categoriesRepository.save({

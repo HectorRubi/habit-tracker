@@ -35,8 +35,8 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return `This action returns category with id: ${id}`;
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.categoriesService.findOne(id);
   }
 
   @Put(':id')
