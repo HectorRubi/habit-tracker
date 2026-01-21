@@ -11,16 +11,14 @@ import {
 } from '@nestjs/common';
 
 import { HabitsService } from '../services/habits.service';
-
+import { UserEntity } from '../../users/entities/user.entity';
+import { User } from '../../auth/decorators/user.decorator';
 import { CreateHabitDto } from '../dto/create-habit';
 import { UpdateHabitDto } from '../dto/update-habit';
 import { CheckHabitDto } from '../dto/check-habit';
 
 @Controller('habits')
 export class HabitsController {
-  // TODO: JWT implementation to get user id
-  private USER_ID = 1;
-
   constructor(private readonly habitsService: HabitsService) {}
 
   @Get()
@@ -29,8 +27,11 @@ export class HabitsController {
   }
 
   @Post()
-  async create(@Body() createHabitDto: CreateHabitDto) {
-    return await this.habitsService.create(createHabitDto, this.USER_ID);
+  async create(
+    @Body() createHabitDto: CreateHabitDto,
+    @User() user: UserEntity,
+  ) {
+    return await this.habitsService.create(createHabitDto, user.id);
   }
 
   @Get(':id')

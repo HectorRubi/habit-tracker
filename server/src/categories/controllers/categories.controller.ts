@@ -11,20 +11,18 @@ import {
 } from '@nestjs/common';
 
 import { CategoriesService } from '../services/categories.service';
-
+import { User } from '../../auth/decorators/user.decorator';
+import { UserEntity } from '../../users/entities/user.entity';
 import { CreateCategoryDto } from '../dto/create-category';
 import { UpdateCategoryDto } from '../dto/update-category';
 import { ListAllDto } from '../dto/list-all.dto';
 
 @Controller('categories')
 export class CategoriesController {
-  // TODO: JWT implementation to get user id
-  private USER_ID = 5;
-
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Get()
-  async findAll(@Query() query: ListAllDto) {
+  async findAll(@Query() query: ListAllDto, @User() user: UserEntity) {
     if (!query.limit) {
       query.limit = 10;
     }
@@ -33,12 +31,15 @@ export class CategoriesController {
       query.page = 0;
     }
 
-    return await this.categoriesService.findAll(query, this.USER_ID);
+    return await this.categoriesService.findAll(query, user.id);
   }
 
   @Post()
-  async create(@Body() createCategoryDto: CreateCategoryDto) {
-    return await this.categoriesService.create(createCategoryDto, this.USER_ID);
+  async create(
+    @Body() createCategoryDto: CreateCategoryDto,
+    @User() user: UserEntity,
+  ) {
+    return await this.categoriesService.create(createCategoryDto, user.id);
   }
 
   @Get(':id')
