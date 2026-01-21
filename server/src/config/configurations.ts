@@ -6,5 +6,9 @@ export default () => ({
     password: process.env.DB_PASSWORD,
     name: process.env.DB_NAME,
   },
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  },
   saltRounds: parseInt(process.env.SALT_ROUNDS as string, 10),
 });

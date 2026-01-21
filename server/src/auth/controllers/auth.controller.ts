@@ -2,6 +2,8 @@ import { Body, Controller, Post } from '@nestjs/common';
 
 import { AuthService } from '../services/auth.service';
 
+import { Public } from '../decorators/public.decorator';
+
 import { SignInDto } from '../dto/signin.dto';
 import { SignOutDto } from '../dto/signout.dto';
 
@@ -9,9 +11,10 @@ import { SignOutDto } from '../dto/signout.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Public()
   @Post('signin')
-  signIn(@Body() signInDto: SignInDto) {
-    return `This actions create a new access token with: ${JSON.stringify(signInDto)}`;
+  async signIn(@Body() signInDto: SignInDto) {
+    return await this.authService.signIn(signInDto);
   }
 
   @Post('signout')

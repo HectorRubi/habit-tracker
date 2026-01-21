@@ -47,4 +47,14 @@ export class UsersService {
       throw new BadRequestException();
     }
   }
+
+  async findByEmail(email: string) {
+    try {
+      return await this.usersRepository.findOneBy({ email });
+    } catch (error) {
+      // TODO: Save errors in a monitoring storage
+      console.error(error);
+      throw new BadRequestException();
+    }
+  }
 }

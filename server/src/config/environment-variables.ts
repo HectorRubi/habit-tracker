@@ -6,5 +6,9 @@ export interface EnvironmentVariables {
     password: string;
     name: string;
   };
+  jwt: {
+    secret: string;
+    expiresIn: string;
+  };
   saltRounds: number;
 }
