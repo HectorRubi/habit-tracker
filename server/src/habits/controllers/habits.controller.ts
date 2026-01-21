@@ -10,20 +10,27 @@ import {
   Query,
 } from '@nestjs/common';
 
+import { HabitsService } from '../services/habits.service';
+
 import { CreateHabitDto } from '../dto/create-habit';
 import { UpdateHabitDto } from '../dto/update-habit';
 import { CheckHabitDto } from '../dto/check-habit';
 
 @Controller('habits')
 export class HabitsController {
+  // TODO: JWT implementation to get user id
+  private USER_ID = 1;
+
+  constructor(private readonly habitsService: HabitsService) {}
+
   @Get()
   findAll() {
     return 'This action returns all habits';
   }
 
   @Post()
-  create(@Body() createDto: CreateHabitDto) {
-    return `This action creates a new habit with data: ${JSON.stringify(createDto)}`;
+  async create(@Body() createHabitDto: CreateHabitDto) {
+    return await this.habitsService.create(createHabitDto, this.USER_ID);
   }
 
   @Get(':id')

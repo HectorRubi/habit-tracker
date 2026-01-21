@@ -19,10 +19,4 @@ export class CreateHabitDto {
 
   @IsNumber()
   categoryId: number;
-
-  @IsNumber()
-  periodicityId: number;
-
-  @IsNumber()
-  userId: number;
 }

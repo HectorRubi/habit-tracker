@@ -5,9 +5,11 @@ import { HabitsController } from './controllers/habits.controller';
 
 import { HabitEntity } from './entities/habit.entity';
 import { HabitLogEntity } from './entities/habit-log.entity';
+import { HabitsService } from './services/habits.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([HabitEntity, HabitLogEntity])],
   controllers: [HabitsController],
+  providers: [HabitsService],
 })
 export class HabitsModule {}
