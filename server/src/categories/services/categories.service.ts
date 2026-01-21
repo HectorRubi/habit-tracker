@@ -24,6 +24,8 @@ export class CategoriesService {
           id: true,
           name: true,
           description: true,
+          createdAt: true,
+          updateAt: true,
         },
         where: { user: { id: userId } },
         take: limit,
