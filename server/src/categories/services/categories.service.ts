@@ -1,9 +1,14 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
 
 import { CategoryEntity } from '../entities/category.entity';
 import { PaginationQueriesDto } from '../../utils/dto/pagination-queries.dto';
+import { ERROR } from '../../utils/constants/errors';
 import { CreateCategoryDto } from '../dto/create-category';
 
 @Injectable()
@@ -36,15 +41,15 @@ export class CategoriesService {
         result: categories,
       };
     } catch (error) {
-      // TODO: Save errors in a monitoring storage
-      console.error(error);
-      throw new BadRequestException();
+      throw new ServiceUnavailableException(ERROR.SERVICE_UNAVAILABLE, {
+        cause: error,
+      });
     }
   }
 
   async findOne(id: number) {
     try {
-      const category = await this.categoriesRepository.findOne({
+      const category = await this.categoriesRepository.findOneOrFail({
         select: {
           id: true,
           name: true,
@@ -57,9 +62,13 @@ export class CategoriesService {
       });
       return category;
     } catch (error) {
-      // TODO: Save errors in a monitoring storage
-      console.error(error);
-      throw new BadRequestException();
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException('Category not found', { cause: error });
+      } else {
+        throw new ServiceUnavailableException(ERROR.SERVICE_UNAVAILABLE, {
+          cause: error,
+        });
+      }
     }
   }
 
@@ -78,9 +87,9 @@ export class CategoriesService {
         createdAt: category.createdAt,
       };
     } catch (error) {
-      // TODO: Save errors in a monitoring storage
-      console.error(error);
-      throw new BadRequestException();
+      throw new ServiceUnavailableException(ERROR.SERVICE_UNAVAILABLE, {
+        cause: error,
+      });
     }
   }
 }

@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -9,6 +13,7 @@ import { ProfileEntity } from '../entities/profile.entity';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from 'src/config/environment-variables';
+import { ERROR } from 'src/utils/constants/errors';
 
 @Injectable()
 export class UsersService {
@@ -52,9 +57,9 @@ export class UsersService {
     try {
       return await this.usersRepository.findOneBy({ email });
     } catch (error) {
-      // TODO: Save errors in a monitoring storage
-      console.error(error);
-      throw new BadRequestException();
+      throw new ServiceUnavailableException(ERROR.SERVICE_UNAVAILABLE, {
+        cause: error,
+      });
     }
   }
 }

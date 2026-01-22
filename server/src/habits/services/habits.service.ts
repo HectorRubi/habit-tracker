@@ -1,11 +1,16 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
 
 import { HabitEntity } from '../entities/habit.entity';
 
 import { CreateHabitDto } from '../dto/create-habit';
 import { PaginationQueriesDto } from '../../utils/dto/pagination-queries.dto';
+import { ERROR } from '../../utils/constants/errors';
 
 @Injectable()
 export class HabitsService {
@@ -41,15 +46,15 @@ export class HabitsService {
         results: habits,
       };
     } catch (error) {
-      // TODO: Save errors in a monitoring storage
-      console.error(error);
-      throw new BadRequestException();
+      throw new ServiceUnavailableException(ERROR.SERVICE_UNAVAILABLE, {
+        cause: error,
+      });
     }
   }
 
   async findOne(id: number) {
     try {
-      const habit = await this.habitsRepository.findOne({
+      const habit = await this.habitsRepository.findOneOrFail({
         where: { id },
         relations: {
           category: true,
@@ -57,9 +62,13 @@ export class HabitsService {
       });
       return habit;
     } catch (error) {
-      // TODO: Save errors in a monitoring storage
-      console.error(error);
-      throw new BadRequestException();
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException('Habit not found', { cause: error });
+      } else {
+        throw new ServiceUnavailableException(ERROR.SERVICE_UNAVAILABLE, {
+          cause: error,
+        });
+      }
     }
   }
 
@@ -80,9 +89,9 @@ export class HabitsService {
         createdAt: habit.createdAt,
       };
     } catch (error) {
-      // TODO: Save errors in a monitoring storage
-      console.error(error);
-      throw new BadRequestException();
+      throw new ServiceUnavailableException(ERROR.SERVICE_UNAVAILABLE, {
+        cause: error,
+      });
     }
   }
 }

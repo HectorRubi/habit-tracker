@@ -5,6 +5,7 @@ import { UsersService } from '../../users/services/users.service';
 
 import { SignInDto } from '../dto/signin.dto';
 import { JwtService } from '@nestjs/jwt';
+import { ERROR } from 'src/utils/constants/errors';
 
 @Injectable()
 export class AuthService {
@@ -16,12 +17,12 @@ export class AuthService {
   async signIn(signInDto: SignInDto) {
     const user = await this.usersService.findByEmail(signInDto.email);
     if (!user) {
-      throw new BadRequestException('Invalid credentials');
+      throw new BadRequestException(ERROR.AUTH.INVALID_CREDENTIALS);
     }
 
     const isMatch = await bcrypt.compare(signInDto.password, user.password);
     if (!isMatch) {
-      throw new BadRequestException('Invalid credentials');
+      throw new BadRequestException(ERROR.AUTH.INVALID_CREDENTIALS);
     }
 
     try {
@@ -32,9 +33,9 @@ export class AuthService {
 
       return { accessToken };
     } catch (error) {
-      // TODO: Save errors in a monitoring storage
-      console.error(error);
-      throw new BadRequestException('Invalid credentials');
+      throw new BadRequestException(ERROR.AUTH.INVALID_CREDENTIALS, {
+        cause: error,
+      });
     }
   }
 }
