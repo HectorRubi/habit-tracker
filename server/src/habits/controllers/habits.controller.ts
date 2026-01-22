@@ -17,10 +17,14 @@ import { CreateHabitDto } from '../dto/create-habit';
 import { UpdateHabitDto } from '../dto/update-habit';
 import { CheckHabitDto } from '../dto/check-habit';
 import { PaginationQueriesDto } from '../../utils/dto/pagination-queries.dto';
+import { HabitsLogService } from '../services/habits_log.service';
 
 @Controller('habits')
 export class HabitsController {
-  constructor(private readonly habitsService: HabitsService) {}
+  constructor(
+    private readonly habitsService: HabitsService,
+    private readonly habitsLogService: HabitsLogService,
+  ) {}
 
   @Get()
   async findAll(
@@ -66,10 +70,10 @@ export class HabitsController {
   }
 
   @Post(':id/check')
-  check(
+  async check(
     @Param('id', ParseIntPipe) id: number,
     @Body() checkDto: CheckHabitDto,
   ) {
-    return `This actions create a habit history log with id: ${id} and data: ${JSON.stringify(checkDto)}`;
+    return await this.habitsLogService.check(checkDto, id);
   }
 }

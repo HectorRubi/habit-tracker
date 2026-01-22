@@ -1,6 +1,6 @@
-import { IsDate } from 'class-validator';
+import { IsDateString } from 'class-validator';
 
 export class CheckHabitDto {
-  @IsDate()
+  @IsDateString()
   date: Date;
 }

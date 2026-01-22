@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BaseEntity } from '../../entities/base.entity';
 import { HabitEntity } from './habit.entity';
@@ -7,6 +7,12 @@ import { HabitEntity } from './habit.entity';
 export class HabitLogEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column()
+  date: Date;
+
+  @Column({ default: false })
+  isDeleted: boolean;
 
   @ManyToOne(() => HabitEntity, (habit) => habit.habitLogs)
   habit: HabitEntity;
