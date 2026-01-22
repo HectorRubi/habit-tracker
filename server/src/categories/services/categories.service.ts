@@ -3,8 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { CategoryEntity } from '../entities/category.entity';
-
-import { ListAllDto } from '../dto/list-all.dto';
+import { PaginationQueriesDto } from '../../utils/dto/pagination-queries.dto';
 import { CreateCategoryDto } from '../dto/create-category';
 
 @Injectable()
@@ -14,7 +13,7 @@ export class CategoriesService {
     private readonly categoriesRepository: Repository<CategoryEntity>,
   ) {}
 
-  async findAll(query: ListAllDto, userId: number) {
+  async findAll(query: PaginationQueriesDto, userId: number) {
     const limit = query.limit || 10;
     const page = query.page || 1;
 

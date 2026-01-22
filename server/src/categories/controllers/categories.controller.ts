@@ -15,14 +15,17 @@ import { User } from '../../auth/decorators/user.decorator';
 import { UserEntity } from '../../users/entities/user.entity';
 import { CreateCategoryDto } from '../dto/create-category';
 import { UpdateCategoryDto } from '../dto/update-category';
-import { ListAllDto } from '../dto/list-all.dto';
+import { PaginationQueriesDto } from '../../utils/dto/pagination-queries.dto';
 
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Get()
-  async findAll(@Query() query: ListAllDto, @User() user: UserEntity) {
+  async findAll(
+    @Query() query: PaginationQueriesDto,
+    @User() user: UserEntity,
+  ) {
     return await this.categoriesService.findAll(query, user.id);
   }
 
