@@ -16,14 +16,18 @@ import { User } from '../../auth/decorators/user.decorator';
 import { CreateHabitDto } from '../dto/create-habit';
 import { UpdateHabitDto } from '../dto/update-habit';
 import { CheckHabitDto } from '../dto/check-habit';
+import { PaginationQueriesDto } from '../../utils/dto/pagination-queries.dto';
 
 @Controller('habits')
 export class HabitsController {
   constructor(private readonly habitsService: HabitsService) {}
 
   @Get()
-  findAll() {
-    return 'This action returns all habits';
+  async findAll(
+    @Query() query: PaginationQueriesDto,
+    @User() user: UserEntity,
+  ) {
+    return await this.habitsService.findAll(query, user.id);
   }
 
   @Post()
