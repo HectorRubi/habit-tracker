@@ -44,7 +44,7 @@ export class CategoriesService {
 
   async findOne(id: number) {
     try {
-      const category = this.categoriesRepository.findOne({
+      const category = await this.categoriesRepository.findOne({
         select: {
           id: true,
           name: true,
