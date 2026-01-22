@@ -39,8 +39,8 @@ export class HabitsController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return `This action returns habit with id: ${id}`;
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.habitsService.findOne(id);
   }
 
   @Put(':id')

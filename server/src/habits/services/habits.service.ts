@@ -47,6 +47,22 @@ export class HabitsService {
     }
   }
 
+  async findOne(id: number) {
+    try {
+      const habit = await this.habitsRepository.findOne({
+        where: { id },
+        relations: {
+          category: true,
+        },
+      });
+      return habit;
+    } catch (error) {
+      // TODO: Save errors in a monitoring storage
+      console.error(error);
+      throw new BadRequestException();
+    }
+  }
+
   async create(createHabitDto: CreateHabitDto, userId: number) {
     try {
       const habit = await this.habitsRepository.save({
