@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { BaseEntity } from '../../entities/base.entity';
+import { BaseEntity } from '../../utils/entities/base.entity';
 import { HabitEntity } from './habit.entity';
 
 @Entity('habit_log')

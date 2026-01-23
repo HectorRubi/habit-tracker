@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { BaseEntity } from '../../entities/base.entity';
+import { BaseEntity } from '../../utils/entities/base.entity';
 import { UserEntity } from '../../users/entities/user.entity';
 import { HabitEntity } from '../../habits/entities/habit.entity';
 

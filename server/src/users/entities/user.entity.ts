@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { BaseEntity } from '../../entities/base.entity';
+import { BaseEntity } from '../../utils/entities/base.entity';
 import { ProfileEntity } from './profile.entity';
 import { AuthEntity } from '../../auth/entities/auth.entity';
 import { CategoryEntity } from '../../categories/entities/category.entity';
