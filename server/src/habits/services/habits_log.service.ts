@@ -1,9 +1,14 @@
-import { Injectable, ServiceUnavailableException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { HabitLogEntity } from '../entities/habit-log.entity';
 import { CheckHabitDto } from '../dto/check-habit';
 import { ERROR } from '../../utils/constants/errors';
+import { FindHistoryDto } from '../dto/find-history.dto';
 
 @Injectable()
 export class HabitsLogService {
@@ -11,6 +16,34 @@ export class HabitsLogService {
     @InjectRepository(HabitLogEntity)
     private readonly habitLogRepository: Repository<HabitLogEntity>,
   ) {}
+
+  async findHistory(findHistoryDto: FindHistoryDto, habitId: number) {
+    const from = findHistoryDto.from;
+    const to = findHistoryDto.to;
+
+    if (from > to) {
+      throw new BadRequestException(
+        '"from" date must be earlier than "to" date',
+      );
+    }
+
+    try {
+      const habitLog = await this.habitLogRepository.find({
+        select: { id: true, date: true },
+        where: {
+          isDeleted: false,
+          habit: { id: habitId },
+          date: Between(from, to),
+        },
+      });
+
+      return habitLog;
+    } catch (error) {
+      throw new ServiceUnavailableException(ERROR.SERVICE_UNAVAILABLE, {
+        cause: error,
+      });
+    }
+  }
 
   async check(checkDto: CheckHabitDto, habitId: number) {
     try {

@@ -16,6 +16,7 @@ import { User } from '../../auth/decorators/user.decorator';
 import { CreateHabitDto } from '../dto/create-habit';
 import { UpdateHabitDto } from '../dto/update-habit';
 import { CheckHabitDto } from '../dto/check-habit';
+import { FindHistoryDto } from '../dto/find-history.dto';
 import { PaginationQueriesDto } from '../../utils/dto/pagination-queries.dto';
 import { HabitsLogService } from '../services/habits_log.service';
 
@@ -61,12 +62,11 @@ export class HabitsController {
   }
 
   @Get(':id/history')
-  findHistory(
+  async findHistory(
     @Param('id', ParseIntPipe) id: number,
-    @Query('from') from: string,
-    @Query('to') to: string,
+    @Query() findHistoryDto: FindHistoryDto,
   ) {
-    return `This action returns history for habit with id: ${id}, from: ${from}, to: ${to}`;
+    return await this.habitsLogService.findHistory(findHistoryDto, id);
   }
 
   @Post(':id/check')
